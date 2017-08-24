@@ -1,0 +1,6 @@
+gevent
+requests
+grequests
+qrcode
+zbar
+pillow
