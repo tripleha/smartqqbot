@@ -24,31 +24,50 @@ content text
 在挂着机器人时可以用其他qq控制机器人，具体命令如下：
 
 好友聊天中：
+
 runtime 查询机器人运行时长
+
 check_record_count 查询当前好友聊天的聊天记录
+
 check_record_\d+ 查询具体的某条编号的记录
+
 clean_table 清空当前聊天的数据库表
+
 check_group 返回当前机器人所加群和对应标号
+
 output_group_\d+ 将对应标号的群的聊天记录输出为csv文件
 
 群聊天中：
 runtime
+
 check_record_count
+
 check_record_\d+
 
 讨论组聊天中：
+
 runtime
+
 check_record_count
+
 check_record_\d+
+
 clean_table
+
 delete_record_\d+ 删除具体编号的聊天记录
+
 output_csv 将当前讨论组聊天记录输出为csv文件
 
 注意：
+
 对于输出的csv文件均为对应表名称
+
 讨论组中#开头的消息不记录
+
 所有聊天中命令均不记录
+
 好友聊天中对非命令信息使用图灵机器人自动回复
+
 群聊天和讨论组聊天中，对@消息进行自动回复
 
 
