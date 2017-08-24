@@ -2,6 +2,14 @@
 
 使用smartqq API接口，可以实现自动回复和获取聊天记录
 
+使用前首先添加外部依赖：
+
+apt-get install libzbar-dev
+
+然后添加库：
+
+pip install -r requirements.txt
+
 支持绑定登录，一般一次扫码以后可以维持两天左右的登录状态，
 
 当前无法获得用户好友，群，讨论组等的唯一信息，使用昵称来区别，
