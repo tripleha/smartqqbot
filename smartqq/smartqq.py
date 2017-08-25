@@ -446,6 +446,22 @@ class SmartQQ(WebQQApi):
                 add_cmd['to_id'] = msg['from_user']['uin']
                 self.CommandList.append(add_cmd)
 
+            # 添加查看具体某个群的聊天记录
+            elif re.match(r'^check_group_\d+_count$', text):
+                add_cmd['func'] = 'check_group_count'
+                add_cmd['time'] = msg['value']['time']
+                add_cmd['g_order'] = int(re.sub(r'^check_group_', '', text).split('_')[0])
+                add_cmd['to_id'] = msg['from_user']['uin']
+                self.CommandList.append(add_cmd)
+            elif re.match(r'^check_group_\d+_\d+$', text):
+                add_cmd['func'] = 'check_group_text'
+                add_cmd['time'] = msg['value']['time']
+                t = re.sub(r'^check_group_', '', text).split('_')
+                add_cmd['g_order'] = int(t[0])
+                add_cmd['msg_order'] = int(t[1])
+                add_cmd['to_id'] = msg['from_user']['uin']
+                self.CommandList.append(add_cmd)
+
             # 机器人测试接口命令
             elif text == 'reply_e':
                 add_cmd['func'] = 'test_emot'

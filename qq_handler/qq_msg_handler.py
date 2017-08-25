@@ -126,6 +126,42 @@ class QQMsgHandler(object):
                         add_reply['text'] = '无记录表'
                 self.smartqq.ReplyList.append(add_reply)
 
+            # 查看某个群聊天记录
+            elif cmd['func'] == 'check_group_count':
+                add_reply['to_id'] = cmd['to_id']
+                if cmd['g_order'] >= len(self.smartqq.group):
+                    add_reply['text'] = '无效编号'
+                else:
+                    try:
+                        table_name = 'groupz' + \
+                                     trans_unicode_into_int(trans_coding(self.smartqq.group[cmd['g_order']]['name']))
+                        max_count = self.msg_db.select_max(table_name, "MsgOrder")
+                        add_reply['text'] = str(max_count)
+                    except:
+                        add_reply['text'] = '无记录表'
+                self.smartqq.ReplyList.append(add_reply)
+            elif cmd['func'] == 'check_group_text':
+                add_reply['to_id'] = cmd['to_id']
+                if cmd['g_order'] >= len(self.smartqq.group):
+                    add_reply['text'] = '无效编号'
+                else:
+                    table_name = 'groupz' + \
+                                 trans_unicode_into_int(trans_coding(self.smartqq.group[cmd['g_order']]['name']))
+                    try:
+                        record = self.msg_db.select(table_name, "MsgOrder", cmd['msg_order'])
+                        if record:
+                            record_msg = 'MsgOrder:' + str(record[0]['MsgOrder']) + ' ' + \
+                                         'Time:' + record[0]['Time'] + ' ' + \
+                                         'From:' + record[0]['FromNick'] + ' ' + \
+                                         'To:' + record[0]['ToNick'] + ' ' + \
+                                         'content:' + record[0]['content']
+                        else:
+                            record_msg = '记录无效'
+                    except:
+                        record_msg = '无记录表'
+                    add_reply['text'] = record_msg
+                self.smartqq.ReplyList.append(add_reply)
+
             # 模板任务
             elif cmd['func'] == 'output_csv':
                 try:
