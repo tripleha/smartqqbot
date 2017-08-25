@@ -497,47 +497,48 @@ class SmartQQ(WebQQApi):
             # 群 -> 我
             table = 'groupz' + trans_unicode_into_int(trans_coding(msg['from_group']['name']))
             self.msg_handler.msg_db.create_table(table, self.msg_handler.msg_col)
-            add_cmd = {}
-            add_cmd['type'] = 2
+            # add_cmd = {}
+            # add_cmd['type'] = 2
             if text == 'check_record_count':
-                add_cmd['func'] = 'check_count'
-                add_cmd['time'] = msg['value']['time']
-                add_cmd['table_name'] = table
-                add_cmd['to_id'] = msg['from_group']['gid']
-                self.CommandList.append(add_cmd)
-            elif re.match(r'^check_record_\d+$', text):
-                add_cmd['func'] = 'check_text'
-                add_cmd['time'] = msg['value']['time']
-                add_cmd['msg_order'] = int(re.sub(r'^check_record_', '', text))
-                add_cmd['table_name'] = table
-                add_cmd['to_id'] = msg['from_group']['gid']
-                self.CommandList.append(add_cmd)
-            elif text == 'runtime':
-                add_cmd['func'] = 'check_time'
-                add_cmd['time'] = msg['value']['time']
-                add_cmd['to_id'] = msg['from_group']['gid']
-                self.CommandList.append(add_cmd)
+                pass
+            #     add_cmd['func'] = 'check_count'
+            #     add_cmd['time'] = msg['value']['time']
+            #     add_cmd['table_name'] = table
+            #     add_cmd['to_id'] = msg['from_group']['gid']
+            #     self.CommandList.append(add_cmd)
+            # elif re.match(r'^check_record_\d+$', text):
+            #     add_cmd['func'] = 'check_text'
+            #     add_cmd['time'] = msg['value']['time']
+            #     add_cmd['msg_order'] = int(re.sub(r'^check_record_', '', text))
+            #     add_cmd['table_name'] = table
+            #     add_cmd['to_id'] = msg['from_group']['gid']
+            #     self.CommandList.append(add_cmd)
+            # elif text == 'runtime':
+            #     add_cmd['func'] = 'check_time'
+            #     add_cmd['time'] = msg['value']['time']
+            #     add_cmd['to_id'] = msg['from_group']['gid']
+            #     self.CommandList.append(add_cmd)
 
             # 在上面定义命令
             else:
                 # 添加自动回复
-                add_flag = False
-                for i in msg['value']['content'][1:]:
-                    if type(i) == str:
-                        if re.match(r'^@' + self.user['nick'] + r'$', i):
-                            add_flag = True
-                            break
-                if add_flag:
-                    s = re.sub(r'@' + self.user['nick'], '', text)
-                    print s
-                    add_reply = {}
-                    add_reply['type'] = 2
-                    add_reply['text'] = s
-                    add_reply['time'] = msg['value']['time']
-                    add_reply['user'] = table
-                    add_reply['to_id'] = msg['from_group']['gid']
-                    add_reply['to_who'] = msg['from_user']['nick']
-                    self.NeedReplyList.append(add_reply)
+                # add_flag = False
+                # for i in msg['value']['content'][1:]:
+                #     if type(i) == str:
+                #         if re.match(r'^@' + self.user['nick'] + r'$', i):
+                #             add_flag = True
+                #             break
+                # if add_flag:
+                #     s = re.sub(r'@' + self.user['nick'], '', text)
+                #     print s
+                #     add_reply = {}
+                #     add_reply['type'] = 2
+                #     add_reply['text'] = s
+                #     add_reply['time'] = msg['value']['time']
+                #     add_reply['user'] = table
+                #     add_reply['to_id'] = msg['from_group']['gid']
+                #     add_reply['to_who'] = msg['from_user']['nick']
+                #     self.NeedReplyList.append(add_reply)
 
                 # 添加储存
                 add_store = {}
