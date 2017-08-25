@@ -15,6 +15,10 @@ import traceback
 import zbar
 from PIL import Image
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 def echo(str):
     Log.info(str[:-1])
@@ -128,6 +132,40 @@ def bknHash(skey, init_str=5381):
         hash_str += (hash_str << 5) + ord(i)
     hash_str = int(hash_str & 2147483647)
     return hash_str
+
+
+def send_mail(to_addr, type_name, name):
+    try:
+        host = Constant.send_mail_host
+        port = Constant.send_mail_port
+        sender = Constant.send_mail_addr
+        pwd = Constant.send_mail_apikey
+        receiver = to_addr
+
+        msg = MIMEMultipart()
+        text = '发送记录为：' + name
+        msg.attach(MIMEText(text, 'plain', 'utf-8'))
+        msg['subject'] = 'deepintell测试记录发送'  # 设置标题
+        msg['from'] = sender  # 设置发送人
+        msg['to'] = receiver  # 设置接收人
+
+        cm = ConfigManager()
+        file_dir = cm.getpath('datafile')
+        file_name = type_name + 'z' + trans_unicode_into_int(trans_coding(name)) + '.csv'
+        att1 = MIMEText(open(file_dir + file_name, 'rb').read(), 'base64', 'utf-8')
+        att1["Content-Type"] = 'application/octet-stream'
+        att1["Content-Disposition"] = 'attachment; filename="%s"' % file_name
+        msg.attach(att1)
+
+        s = smtplib.SMTP_SSL(host, port)  # 使用SSL端口
+        s.login(sender, pwd)  # 登陆邮箱
+        s.sendmail(sender, receiver, msg.as_string())  # 发送邮件
+        s.quit()  # 关闭链接
+        print '邮件发送成功\n'
+    except:
+        print '邮件发送失败\n'
+    finally:
+        exit()  # 退出子进程
 
 
 def trans_coding(data):

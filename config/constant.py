@@ -17,6 +17,12 @@ class Constant(object):
 
     LOG_MSG_KILL_PROCESS = 'kill %d'
 
+    # 发送邮件的邮箱配置
+    send_mail_host = 'smtp.163.com'
+    send_mail_port = 465
+    send_mail_addr = 'record_sender@163.com'
+    send_mail_apikey = 'send123456'
+
     # tuling机器人配置
     BOT_TULING_API_KEY = '55e7f30895a0a10535984bae5ad294d1'
     BOT_TULING_API_URL = 'http://www.tuling123.com/openapi/api?key=%s&info=%s&userid=%s'

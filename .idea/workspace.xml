@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffcb5a3c-c812-4356-8442-79d0180d735b" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp_data/WebQQ.db" afterPath="$PROJECT_DIR$/tmp_data/WebQQ.db" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp_data/qrcode.png" afterPath="$PROJECT_DIR$/tmp_data/qrcode.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/constant.py" afterPath="$PROJECT_DIR$/config/constant.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/webqq.conf" afterPath="$PROJECT_DIR$/config/webqq.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/qq_handler/qq_msg_handler.py" afterPath="$PROJECT_DIR$/qq_handler/qq_msg_handler.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartqq/smartqq.py" afterPath="$PROJECT_DIR$/smartqq/smartqq.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartqq/utils.py" afterPath="$PROJECT_DIR$/smartqq/utils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp_data/mycookie.pkl" afterPath="$PROJECT_DIR$/tmp_data/mycookie.pkl" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,27 +20,86 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="smartqq.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/smartqq/smartqq.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-180">
-              <caret line="507" column="50" lean-forward="true" selection-start-line="507" selection-start-column="50" selection-end-line="507" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="smartqq_apis.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smartqq/smartqq_apis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
+            <state relative-caret-position="-609">
               <caret line="332" column="17" lean-forward="true" selection-start-line="332" selection-start-column="17" selection-end-line="332" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="smartqq.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smartqq/smartqq.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3169">
+              <caret line="632" column="17" lean-forward="true" selection-start-line="632" selection-start-column="17" selection-end-line="632" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qq_msg_handler.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/qq_handler/qq_msg_handler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="143">
+              <caret line="71" column="21" lean-forward="true" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+              <folding>
+                <element signature="e#39#66#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smartqq/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="142" column="26" lean-forward="false" selection-start-line="142" selection-start-column="26" selection-end-line="142" selection-end-column="26" />
+              <folding>
+                <element signature="e#39#71#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="constant.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/constant.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="smartqq_bot.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smartqq_bot.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="522">
+              <caret line="42" column="22" lean-forward="true" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="webqq.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/webqq.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-162">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>cmd_text</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,7 +108,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/smartqq/smartqq_apis.py" />
+        <option value="$PROJECT_DIR$/config/constant.py" />
+        <option value="$PROJECT_DIR$/smartqq/utils.py" />
         <option value="$PROJECT_DIR$/smartqq/smartqq.py" />
+        <option value="$PROJECT_DIR$/qq_handler/qq_msg_handler.py" />
       </list>
     </option>
   </component>
@@ -75,6 +144,21 @@
             <path>
               <item name="smartqqbot" type="b2602c69:ProjectViewProjectNode" />
               <item name="smartqqbot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="smartqqbot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="smartqqbot" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="smartqqbot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="smartqqbot" type="462c0819:PsiDirectoryNode" />
+              <item name="db" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="smartqqbot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="smartqqbot" type="462c0819:PsiDirectoryNode" />
+              <item name="qq_handler" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="smartqqbot" type="b2602c69:ProjectViewProjectNode" />
@@ -147,9 +231,51 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/config/constant.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/webqq.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-162">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/config_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smartqq_bot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="42" column="22" lean-forward="true" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smartqq/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="142" column="26" lean-forward="false" selection-start-line="142" selection-start-column="26" selection-end-line="142" selection-end-column="26" />
+          <folding>
+            <element signature="e#39#71#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/smartqq/smartqq_apis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
+        <state relative-caret-position="-609">
           <caret line="332" column="17" lean-forward="true" selection-start-line="332" selection-start-column="17" selection-end-line="332" selection-end-column="17" />
           <folding />
         </state>
@@ -157,9 +283,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/smartqq/smartqq.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-180">
-          <caret line="507" column="50" lean-forward="true" selection-start-line="507" selection-start-column="50" selection-end-line="507" selection-end-column="50" />
+        <state relative-caret-position="3169">
+          <caret line="632" column="17" lean-forward="true" selection-start-line="632" selection-start-column="17" selection-end-line="632" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/sqlite_db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2808">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/qq_handler/qq_msg_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="71" column="21" lean-forward="true" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+          <folding>
+            <element signature="e#39#66#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
