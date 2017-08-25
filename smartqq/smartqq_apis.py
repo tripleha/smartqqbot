@@ -194,74 +194,90 @@ class WebQQApi(object):
 
     # 获取联系人
     def GetContact(self):
-        result = self.url_get(
-            url='http://s.web2.qq.com/api/get_user_friends2',
-            data={
-                'r': json.dumps({'vfwebqq': self.vfwebqq, 'hash': self.hash})
-            },
-            referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
-                     'callback=1&id=2')
-        )
-        r = json.loads(result.content, object_hook=self._decode_data)
-        if r['retcode'] == 0:
-            info = r['result']['info']
-            friends = r['result']['friends']
-            marknames = r['result']['marknames']
+        count = 0
+        while True:
+            result = self.url_get(
+                url='http://s.web2.qq.com/api/get_user_friends2',
+                data={
+                    'r': json.dumps({'vfwebqq': self.vfwebqq, 'hash': self.hash})
+                },
+                referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
+                         'callback=1&id=2')
+            )
+            count += 1
+            r = json.loads(result.content, object_hook=self._decode_data)
+            if r['retcode'] == 0:
+                info = r['result']['info']
+                friends = r['result']['friends']
+                marknames = r['result']['marknames']
 
-            for p in friends:
-                add_contact = {}
-                add_contact['uin'] = p['uin']
-                for i in info:
-                    if p['uin'] == i['uin']:
-                        add_contact['nick'] = i['nick']
-                        break
-                else:
-                    error('never in contact name = 0\n')
-                    add_contact['nick'] = 0  # 一般不会出现
-                for m in marknames:
-                    if p['uin'] == m['uin']:
-                        add_contact['markname'] = m['markname']
-                        break
-                else:
-                    add_contact['markname'] = ''
-                self.contact.append(add_contact)
-        else:
-            echo('重新获取联系人\n')
-            time.sleep(0.2)
-            self.GetContact()
-        return True
+                for p in friends:
+                    add_contact = {}
+                    add_contact['uin'] = p['uin']
+                    for i in info:
+                        if p['uin'] == i['uin']:
+                            add_contact['nick'] = i['nick']
+                            break
+                    else:
+                        error('never in contact name = 0\n')
+                        add_contact['nick'] = 0  # 一般不会出现
+                    for m in marknames:
+                        if p['uin'] == m['uin']:
+                            add_contact['markname'] = m['markname']
+                            break
+                    else:
+                        add_contact['markname'] = ''
+                    self.contact.append(add_contact)
+                return True
+            elif count >= 5:
+                break
+            else:
+                echo('重新获取联系人\n')
+                time.sleep(0.2)
+        return False
 
     def GetGroup(self):
-        result = self.url_get(
-            url='http://s.web2.qq.com/api/get_group_name_list_mask2',
-            data={
-                'r': json.dumps({'vfwebqq': self.vfwebqq, 'hash': self.hash})
-            },
-            referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
-                     'callback=1&id=2')
-        )
-        r = json.loads(result.content, object_hook=self._decode_data)
-        if r['retcode'] == 0:
-            gnamelist = r['result']['gnamelist']
-            gmarklist = r['result']['gmarklist']
+        count = 0
+        while True:
+            result = self.url_get(
+                url='http://s.web2.qq.com/api/get_group_name_list_mask2',
+                data={
+                    'r': json.dumps({'vfwebqq': self.vfwebqq, 'hash': self.hash})
+                },
+                referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
+                         'callback=1&id=2')
+            )
+            count += 1
+            r = json.loads(result.content, object_hook=self._decode_data)
+            if r['retcode'] == 0:
+                gnamelist = r['result']['gnamelist']
+                gmarklist = r['result']['gmarklist']
 
-            for g in gnamelist:
-                add_group = {}
-                add_group['gid'] = g['gid']
-                add_group['code'] = g['code']
-                add_group['name'] = g['name']
-                for i in gmarklist:
-                    if g['gid'] == i['uin']:
-                        add_group['markname'] = i['markname']
-                        break
-                else:
-                    add_group['markname'] = ''
-                self.group.append(add_group)
-        else:
-            echo('重新获取群\n')
-            time.sleep(0.2)
-            self.GetGroup()
-        return True
+                for g in gnamelist:
+                    add_group = {}
+                    add_group['gid'] = g['gid']
+                    add_group['code'] = g['code']
+                    add_group['name'] = g['name']
+                    for i in gmarklist:
+                        if g['gid'] == i['uin']:
+                            add_group['markname'] = i['markname']
+                            break
+                    else:
+                        add_group['markname'] = ''
+                    for i in xrange(0, len(self.group)):
+                        if self.group[i]['gid'] == add_group['gid']:
+                            self.group[i]['name'] = add_group['name']
+                            self.group[i]['markname'] = add_group['markname']
+                            break
+                    else:
+                        self.group.append(add_group)
+                return True
+            elif count >= 5:
+                break
+            else:
+                echo('重新获取群\n')
+                time.sleep(0.2)
+        return False
 
     def GetGroupMember(self, gcode):
         count = 0
@@ -282,31 +298,36 @@ class WebQQApi(object):
         return None
 
     def GetDiscuss(self):
-        result = self.url_get(
-            url=('http://s.web2.qq.com/api/get_discus_list?clientid=%s&'
-                 'psessionid=%s&vfwebqq=%s&t=%s') %
-                (self.clientid, self.psessionid, self.vfwebqq, str(int(time.time()))),
-            referer=('http://d1.web2.qq.com/proxy.html?v=20151105001'
-                     '&callback=1&id=2'),
-        )
-        r = json.loads(result.content, object_hook=self._decode_data)
-        if r['retcode'] == 0:
-            dnamelist = r['result']['dnamelist']
+        count = 0
+        while True:
+            result = self.url_get(
+                url=('http://s.web2.qq.com/api/get_discus_list?clientid=%s&'
+                     'psessionid=%s&vfwebqq=%s&t=%s') %
+                    (self.clientid, self.psessionid, self.vfwebqq, str(int(time.time()))),
+                referer=('http://d1.web2.qq.com/proxy.html?v=20151105001'
+                         '&callback=1&id=2'),
+            )
+            count += 1
+            r = json.loads(result.content, object_hook=self._decode_data)
+            if r['retcode'] == 0:
+                dnamelist = r['result']['dnamelist']
 
-            for d in dnamelist:
-                add_discuss = {}
-                add_discuss['did'] = d['did']
-                if d['name']:
-                    add_discuss['name'] = d['name']
-                else:
-                    error('never in discuss name = 0\n')
-                    add_discuss['name'] = 0  # QQ不同于微信，这个一般也不会出现
-                self.discuss.append(add_discuss)
-        else:
-            echo('重新获取讨论组\n')
-            time.sleep(0.2)
-            self.GetDiscuss()
-        return True
+                for d in dnamelist:
+                    add_discuss = {}
+                    add_discuss['did'] = d['did']
+                    if d['name']:
+                        add_discuss['name'] = d['name']
+                    else:
+                        error('never in discuss name = 0\n')
+                        add_discuss['name'] = 0  # QQ不同于微信，这个一般也不会出现
+                    self.discuss.append(add_discuss)
+                return True
+            elif count >= 5:
+                break
+            else:
+                echo('重新获取讨论组\n')
+                time.sleep(0.2)
+        return False
 
     def GetDiscussMember(self, did):
         count = 0
