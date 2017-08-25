@@ -45,6 +45,10 @@ check_group 返回当前机器人所加群和对应标号
 
 output_group_\d+ 将对应标号的群的聊天记录输出为csv文件
 
+check_group_\d+_count 查看具体标号群的聊天记录数量
+
+check_group_\d+_\d+ 查看具体标号群的某条记录
+
 群聊天中：
 runtime
 

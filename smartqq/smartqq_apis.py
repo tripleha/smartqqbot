@@ -173,7 +173,7 @@ class WebQQApi(object):
         try:
             # 请求一下 get_online_buddies 页面，避免103错误。
             # 若请求无错误发生，则表明登录成功
-            self.url_get(
+            result = self.url_get(
                 url=('http://d1.web2.qq.com/channel/get_online_buddies2?'
                      'vfwebqq=%s&clientid=%d&psessionid=%s&t=%s') %
                     (self.vfwebqq, self.clientid, self.psessionid, str(int(time.time()))),
@@ -181,7 +181,11 @@ class WebQQApi(object):
                          'callback=1&id=2'),
                 origin='http://d1.web2.qq.com'
             )
-            flag = True
+            if result:
+                r = json.loads(result.content, object_hook=self._decode_data)
+                print r
+                if r['retcode'] == 0:
+                    flag = True
         finally:
             pass
 
