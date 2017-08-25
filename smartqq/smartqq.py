@@ -250,7 +250,11 @@ class SmartQQ(WebQQApi):
                 if from_group['name'] == 0:
                     # 遇见新群，需要重新获取群列表，以获取gcode来获取群的成员信息
                     echo('未识别群，需重新获取群信息\n')
-                    self.GetGroup()
+                    if self.GetGroup():
+                        pass
+                    else:
+                        error('登录信息可能已经失效，退出程序\n')
+                        exit()
                     from_group = self.get_group_by_gid(value['from_uin'])
                     from_group_info = self.GetGroupMember(from_group['code'])
                     if from_group_info:
