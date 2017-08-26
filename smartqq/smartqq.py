@@ -54,10 +54,12 @@ class SmartQQ(WebQQApi):
                 login_flag = self.TestLogin()
                 if login_flag:
                     echo('恢复登录成功！\n')
+                    self.send_png = True  # 用于重启登录发送二维码
                 else:
                     echo('恢复登录失败!\n')
             except:
                 error(traceback.format_exc())
+                echo('恢复登录失败!\n')
         if not login_flag:
             run('开始二维码登录\n', self.Login)
 
@@ -75,28 +77,34 @@ class SmartQQ(WebQQApi):
         run('开始拉取群、讨论组成员\n', self.fetch_group_discuss_member)
 
         while True:
+            # 目前对于webqq的返回码并没有完全掌握，如果遇到掉线问题，特别是100001 login error
+            # 如果掉线立刻尝试重新连接，可能会导致意外情况，为了保险起见将会延时1分钟重连
             r = self.PollMsg()
             if 'retcode' in r:
-                self.exit_code = r['retcode']
                 if r['retcode'] == 0:
+                    self.exit_code = 0
                     if 'result' in r and len(r['result']):
                         echo('in handler\n')
                         self.handle_mod(r['result'])
                     else:
                         print r
-                        time.sleep(0.5)
                 elif r['retcode'] == 103:
                     self.exit_code = 0
                     print r
                     break
                 else:
+                    self.exit_code = 0
                     print r
+                    time.sleep(60)  # 当前有封号风险，尝试等待一分钟重连
                     break
+            # 下面情况出现将会直接退出
             elif 'errCode' in r:
-                self.exit_code = r['errCode']
+                # 不明情况
+                self.exit_code = 1
                 print r
                 break
             else:
+                # 更加不明情况
                 self.exit_code = 1
                 print r
                 break
@@ -336,6 +344,7 @@ class SmartQQ(WebQQApi):
                             self.discuss_member[from_discuss['did']].append(add_member)
                     else:
                         op_flag = False
+                        # 当接收到讨论组文件时将会进入，在其他极端情况下也会进入，目前暂无好的解决方法
                         error('never in can not get discuss info make discuss name unknown\n')
                         from_discuss['name'] = 'unknown_discuss_' + str(value['from_uin'])
                 rmsg['from_discuss'] = from_discuss

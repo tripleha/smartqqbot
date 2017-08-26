@@ -25,8 +25,13 @@ class WebQQApi(object):
         self.hash = None
         self.bkn = None
 
+        self.send_png = False  # 控制发送二维码
+
         # 用户信息
-        self.user = {}
+        self.user = {
+            'qq': None,
+            'nick': None
+        }
 
         # 用户联系人，群，讨论组
         self.contact = []
@@ -77,8 +82,9 @@ class WebQQApi(object):
         api_qrcode = 'https://ssl.ptlogin2.qq.com/ptqrshow?appid=501004106&e=0&l=M&s=5&d=72&v=4&t='
         try:
             qrcode_url = api_qrcode + str(int(time.time()))
-            str2qr_terminal(self.getQrcode(qrcode_url))
+            str2qr_terminal(self.getQrcode(qrcode_url), self.send_png)
             x, y = 1, 1
+            count = 0
             while True:
                 time.sleep(1)
                 authStatus = self.getAuthStatus()
@@ -91,9 +97,14 @@ class WebQQApi(object):
                         echo('二维码已扫描，等待授权...\n')
                         y = 0
                 elif '二维码已失效' in authStatus:
+                    count += 1
+                    if count >= 5:
+                        echo('长时间无扫码操作，退出程序...\n')
+                        sys.exit()
+
                     echo('二维码已失效, 重新获取二维码\n')
                     qrcode_url = api_qrcode + str(int(time.time()))
-                    str2qr_terminal(self.getQrcode(qrcode_url))
+                    str2qr_terminal(self.getQrcode(qrcode_url), self.send_png)
                     x, y = 1, 1
                 elif '登录成功' in authStatus:
                     echo('已获授权\n')
@@ -101,12 +112,14 @@ class WebQQApi(object):
                     self.user['nick'] = str(items[-1].split("'")[1])
                     self.user['qq'] = str(int(self.session.cookies['superuin'][1:]))
                     self.urlPtwebqq = items[2].strip().strip("'")
+                    self.send_png = True  # 重新登录将发送二维码
                     break
                 else:
                     error('获取二维码扫描状态时出错, html="%s"\n' % authStatus)
                     sys.exit(1)
-        finally:
-            pass
+        except:
+            error(traceback.format_exc())
+            sys.exit()
 
     def getAuthStatus(self):
         result = self.url_get(
@@ -173,24 +186,28 @@ class WebQQApi(object):
         try:
             # 请求一下 get_online_buddies 页面，避免103错误。
             # 若请求无错误发生，则表明登录成功
-            result = self.url_get(
-                url=('http://d1.web2.qq.com/channel/get_online_buddies2?'
-                     'vfwebqq=%s&clientid=%d&psessionid=%s&t=%s') %
-                    (self.vfwebqq, self.clientid, self.psessionid, str(int(time.time()))),
-                referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
-                         'callback=1&id=2'),
-                origin='http://d1.web2.qq.com'
-            )
-            if result:
-                r = json.loads(result.content, object_hook=self._decode_data)
-                print r
-                if r['retcode'] == 0:
-                    flag = True
+            count = 0
+            while not flag:
+                count += 1
+                result = self.url_get(
+                    url=('http://d1.web2.qq.com/channel/get_online_buddies2?'
+                         'vfwebqq=%s&clientid=%d&psessionid=%s&t=%s') %
+                        (self.vfwebqq, self.clientid, self.psessionid, str(int(time.time()))),
+                    referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
+                             'callback=1&id=2'),
+                    origin='http://d1.web2.qq.com'
+                )
+                if result:
+                    r = json.loads(result.content, object_hook=self._decode_data)
+                    print r
+                    if r['retcode'] == 0:
+                        flag = True
+                if count >= 3:
+                    break
         finally:
-            pass
-
-        echo('登录账号：%s(%s)\n' % (self.user['nick'], self.user['qq']))
-        return flag
+            if flag:
+                echo('登录账号：%s(%s)\n' % (self.user['nick'], self.user['qq']))
+            return flag
 
     # 获取联系人
     def GetContact(self):
@@ -339,6 +356,7 @@ class WebQQApi(object):
                 referer=('http://d1.web2.qq.com/proxy.html?v=20151105001'
                          '&callback=1&id=2')
             )
+            count += 1
             r = json.loads(result.content, object_hook=self._decode_data)
             if r['retcode'] == 0:
                 return r
