@@ -249,7 +249,7 @@ class QQMsgHandler(object):
                         person[rec['FromNick']] += 1
                     add_line = []
                     for p in person.keys():
-                        add_line.append(p)
+                        add_line.append(trans_coding(p).encode('gbk', 'ignore'))
                         add_line.append(person[p])
                     datas.append(add_line)
                     out_file = open(file_dir, 'ab+')
