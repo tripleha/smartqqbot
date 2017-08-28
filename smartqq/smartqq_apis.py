@@ -199,7 +199,7 @@ class WebQQApi(object):
                 )
                 if result:
                     r = json.loads(result.content, object_hook=self._decode_data)
-                    print r
+                    echo(str(r) + '\n')
                     if r['retcode'] == 0:
                         flag = True
                 if count >= 3:
@@ -228,6 +228,8 @@ class WebQQApi(object):
                 friends = r['result']['friends']
                 marknames = r['result']['marknames']
 
+                contact = []
+
                 for p in friends:
                     add_contact = {}
                     add_contact['uin'] = p['uin']
@@ -244,7 +246,9 @@ class WebQQApi(object):
                             break
                     else:
                         add_contact['markname'] = ''
-                    self.contact.append(add_contact)
+                    contact.append(add_contact)
+
+                self.contact = contact[:]  # 重置列表，防止重新登录时uin改变导致的错误
                 return True
             elif count >= 5:
                 break
@@ -270,6 +274,8 @@ class WebQQApi(object):
                 gnamelist = r['result']['gnamelist']
                 gmarklist = r['result']['gmarklist']
 
+                group = []
+
                 for g in gnamelist:
                     add_group = {}
                     add_group['gid'] = g['gid']
@@ -281,13 +287,9 @@ class WebQQApi(object):
                             break
                     else:
                         add_group['markname'] = ''
-                    for i in xrange(0, len(self.group)):
-                        if self.group[i]['gid'] == add_group['gid']:
-                            self.group[i]['name'] = add_group['name']
-                            self.group[i]['markname'] = add_group['markname']
-                            break
-                    else:
-                        self.group.append(add_group)
+                    group.append(add_group)
+
+                self.group = group[:]  # 重置列表，防止重新登录时uin改变导致的错误
                 return True
             elif count >= 5:
                 break
@@ -309,6 +311,7 @@ class WebQQApi(object):
             r = json.loads(result.content, object_hook=self._decode_data)
             if r['retcode'] == 0:
                 return r
+            error(str(r) + '\n')
             time.sleep(0.2)
             if count >= 5:
                 break
@@ -329,6 +332,8 @@ class WebQQApi(object):
             if r['retcode'] == 0:
                 dnamelist = r['result']['dnamelist']
 
+                discuss = []
+
                 for d in dnamelist:
                     add_discuss = {}
                     add_discuss['did'] = d['did']
@@ -337,7 +342,9 @@ class WebQQApi(object):
                     else:
                         error('never in discuss name = 0\n')
                         add_discuss['name'] = 0  # QQ不同于微信，这个一般也不会出现
-                    self.discuss.append(add_discuss)
+                    discuss.append(add_discuss)
+
+                self.discuss = discuss[:]  # 重置列表，防止重新登录时uin改变导致的错误
                 return True
             elif count >= 5:
                 break
@@ -360,6 +367,7 @@ class WebQQApi(object):
             r = json.loads(result.content, object_hook=self._decode_data)
             if r['retcode'] == 0:
                 return r
+            error(str(r) + '\n')
             time.sleep(0.2)
             if count >= 5:
                 break
@@ -394,21 +402,21 @@ class WebQQApi(object):
             if r and 'errCode' in r:
                 return True
             else:
-                print r
+                error(str(r) + '\n')
                 return False
         elif s_type == 2:
             r = self.send_group_text(to_id, text)
             if r and 'errCode' in r:
                 return True
             else:
-                print r
+                error(str(r) + '\n')
                 return False
         elif s_type == 3:
             r = self.send_discuss_text(to_id, text)
             if r and 'errCode' in r:
                 return True
             else:
-                print r
+                error(str(r) + '\n')
                 return False
         return False
 

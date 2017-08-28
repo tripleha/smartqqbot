@@ -87,26 +87,26 @@ class SmartQQ(WebQQApi):
                         echo('in handler\n')
                         self.handle_mod(r['result'])
                     else:
-                        print r
+                        echo(str(r) + '\n')
                 elif r['retcode'] == 103:
                     self.exit_code = 0
-                    print r
+                    echo(str(r) + '\n')
                     break
                 else:
                     self.exit_code = 0
-                    print r
+                    echo(str(r) + '\n')
                     time.sleep(60)  # 当前有封号风险，尝试等待一分钟重连
                     break
             # 下面情况出现将会直接退出
             elif 'errCode' in r:
                 # 不明情况
                 self.exit_code = 1
-                print r
+                echo(str(r) + '\n')
                 break
             else:
                 # 更加不明情况
                 self.exit_code = 1
-                print r
+                echo(str(r) + '\n')
                 break
 
     def stop(self):
@@ -172,6 +172,7 @@ class SmartQQ(WebQQApi):
     def fetch_group_discuss_member(self):
         echo('获取群成员\n')
         count = 0
+        self.group_member = {}  # 重置群成员列表
         for g in self.group:
             m_count = 0
             while True:
@@ -197,11 +198,16 @@ class SmartQQ(WebQQApi):
                         self.group_member[g['gid']].append(add_member)
                         m_count += 1
                     break
+                else:
+                    # 一般在与服务器断开链接才会出现
+                    echo('%d:获取群 %s（gid:%s）成员时出错\n' % (count + 1, g['name'], g['gid']))
+                    return False
             count += 1
             echo('%d：获取到群 %s 成员 %d 名\n' % (count, g['name'], m_count))
 
         echo('获取讨论组成员\n')
         count = 0
+        self.discuss_member = {}  # 重置讨论组成员列表
         for d in self.discuss:
             m_count = 0
             while True:
@@ -217,6 +223,10 @@ class SmartQQ(WebQQApi):
                         self.discuss_member[d['did']].append(add_member)
                         m_count += 1
                     break
+                else:
+                    # 一般在与服务器断开链接才会出现
+                    echo('%d:获取讨论组 %s（did:%s）成员时出错\n' % (count + 1, d['name'], d['did']))
+                    return False
             count += 1
             echo('%d：获取到讨论组 %s 成员 %d 名\n' % (count, d['name'], m_count))
 
@@ -374,8 +384,8 @@ class SmartQQ(WebQQApi):
                         from_user['nick'] = 'unknown_' + str(value['send_uin'])
                 rmsg['from_user'] = from_user
 
+            to_user = {}
             if value['to_uin'] == self.uin:
-                to_user = {}
                 to_user['uin'] = self.uin
                 to_user['nick'] = self.user['nick']
                 to_user['markname'] = ''
@@ -383,7 +393,9 @@ class SmartQQ(WebQQApi):
                 op_flag = False
                 error('never in to uin not my uin\n')
                 # 现在webqq已经无法接收到自己在其他客户端发出的消息了，所以正常不会进入此步骤
+                to_user['uin'] = value['to_uin']
                 to_user['nick'] = 'unknown_' + str(value['to_uin'])
+                to_user['markname'] = ''
             rmsg['to_user'] = to_user
 
             text = self.handle_content(value['content'][1:])
@@ -557,7 +569,6 @@ class SmartQQ(WebQQApi):
                 #             break
                 # if add_flag:
                 #     s = re.sub(r'@' + self.user['nick'], '', text)
-                #     print s
                 #     add_reply = {}
                 #     add_reply['type'] = 2
                 #     add_reply['text'] = s
@@ -649,7 +660,6 @@ class SmartQQ(WebQQApi):
                             break
                 if add_flag:
                     s = re.sub(r'@' + self.user['nick'], '', text)
-                    print s
                     add_reply = {}
                     add_reply['type'] = 3
                     add_reply['text'] = s
@@ -670,14 +680,15 @@ class SmartQQ(WebQQApi):
 
     def handle_content(self, content):
         text = ''
-        print content
+        echo(str(content) + '\n')
         for c in content:
             if type(c) == list:
+                # 尝试添加表情处理
                 text += '[表情]'
             elif type(c) == str:
                 text += c
             else:
-                print c
+                echo(str(c) + '\n')
         return text
 
     def show_msg(self, msg):

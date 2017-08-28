@@ -16,10 +16,7 @@ import zbar
 from PIL import Image
 
 import smtplib
-from email import encoders
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 import multiprocessing
 
