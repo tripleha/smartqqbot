@@ -270,7 +270,7 @@ class WebQQApi(object):
             )
             count += 1
             r = json.loads(result.content, object_hook=self._decode_data)
-            if r['retcode'] == 0:
+            if r['retcode'] == 0 or r['retcode'] == 100003:
                 gnamelist = r['result']['gnamelist']
                 gmarklist = r['result']['gmarklist']
 
@@ -399,21 +399,21 @@ class WebQQApi(object):
     def send_text(self, s_type, to_id, text):
         if s_type == 1:
             r = self.send_user_text(to_id, text)
-            if r and 'errCode' in r:
+            if r and 'retcode' in r and r['retcode'] == 0:
                 return True
             else:
                 error(str(r) + '\n')
                 return False
         elif s_type == 2:
             r = self.send_group_text(to_id, text)
-            if r and 'errCode' in r:
+            if r and 'retcode' in r and r['retcode'] == 0:
                 return True
             else:
                 error(str(r) + '\n')
                 return False
         elif s_type == 3:
             r = self.send_discuss_text(to_id, text)
-            if r and 'errCode' in r:
+            if r and 'retcode' in r and r['retcode'] == 0:
                 return True
             else:
                 error(str(r) + '\n')
