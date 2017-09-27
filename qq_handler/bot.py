@@ -14,8 +14,9 @@ class Bot(object):
         self.active_bot = 'tuling-bot'
 
     def get_many_reply(self, need_reply_list):
-        def except_handler():
+        def except_handler(r, e):
             echo('request bot reply failed\n')
+            return None
 
         api_key = Constant.BOT_TULING_API_KEY
         api_urls = [Constant.BOT_TULING_API_URL % (api_key, ne_reply['text'], ne_reply['user'])
