@@ -50,4 +50,4 @@ while True:
         msg_db.close()
         if smartqq.exit_code == 1:
             send_login_mail('')
-        os.system('kill %d' % os.getpid())
+        break
