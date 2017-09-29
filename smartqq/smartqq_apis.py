@@ -219,7 +219,8 @@ class WebQQApi(object):
                     'r': json.dumps({'vfwebqq': self.vfwebqq, 'hash': self.hash})
                 },
                 referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
-                         'callback=1&id=2')
+                         'callback=1&id=2'),
+                origin='https://d1.web2.qq.com'
             )
             count += 1
             r = json.loads(result.content, object_hook=self._decode_data)
@@ -266,7 +267,8 @@ class WebQQApi(object):
                     'r': json.dumps({'vfwebqq': self.vfwebqq, 'hash': self.hash})
                 },
                 referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
-                         'callback=1&id=2')
+                         'callback=1&id=2'),
+                origin='https://d1.web2.qq.com'
             )
             count += 1
             r = json.loads(result.content, object_hook=self._decode_data)
@@ -384,7 +386,8 @@ class WebQQApi(object):
                 })
             },
             referer=('http://d1.web2.qq.com/proxy.html?v=20151105001&'
-                     'callback=1&id=2')
+                     'callback=1&id=2'),
+            origin='https://d1.web2.qq.com'
         )
         if result:
             r = json.loads(result.content, object_hook=self._decode_data)
@@ -448,7 +451,8 @@ class WebQQApi(object):
                     "psessionid": self.psessionid,
                 })
             },
-            referer='http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
+            referer='http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2',
+            origin='https://d1.web2.qq.com'
         )
         if result:
             r = json.loads(result.content, object_hook=self._decode_data)
@@ -488,7 +492,8 @@ class WebQQApi(object):
                     "psessionid": self.psessionid,
                 })
             },
-            referer='http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
+            referer='http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2',
+            origin='https://d1.web2.qq.com'
         )
         if result:
             r = json.loads(result.content, object_hook=self._decode_data)
@@ -528,7 +533,8 @@ class WebQQApi(object):
                     "psessionid": self.psessionid,
                 })
             },
-            referer='http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
+            referer='http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2',
+            origin='https://d1.web2.qq.com'
         )
         if result:
             r = json.loads(result.content, object_hook=self._decode_data)
@@ -546,7 +552,7 @@ class WebQQApi(object):
         referer and self.session.headers.update({'Referer': referer})
         origin and self.session.headers.update({'Origin': origin})
         if url == 'https://d1.web2.qq.com/channel/poll2':
-            timeout = 120
+            timeout = 70  # 正常60S返回
         elif url in ['http://d1.web2.qq.com/channel/send_buddy_msg2',
                      'http://d1.web2.qq.com/channel/send_qun_msg2',
                      'http://d1.web2.qq.com/channel/send_discu_msg2']:
