@@ -38,6 +38,8 @@ class SmartQQ(WebQQApi):
 
     def start(self):
 
+        self.exit_code = 0
+
         login_flag = False
 
         if self.ask_login:
@@ -77,6 +79,14 @@ class SmartQQ(WebQQApi):
         run('开始拉取群、讨论组成员\n', self.fetch_group_discuss_member)
 
         while True:
+            # 当前版本测试用机器人，添加定时休眠机制
+            t_hour = time.localtime().tm_hour
+            if 1 < t_hour < 8:
+                self.exit_code = 100
+                echo('ready to sleep\n')
+                break
+
+
             # 目前对于webqq的返回码并没有完全掌握，如果遇到掉线问题，特别是100001 login error
             # 如果掉线立刻尝试重新连接，可能会导致意外情况，为了保险起见将会延时1分钟重连
             r = self.PollMsg()
@@ -501,6 +511,20 @@ class SmartQQ(WebQQApi):
                 t = re.sub(r'^send_group_', '', cmd_text).split('_')
                 add_cmd['g_order'] = int(t[0])
                 add_cmd['email_addr'] = '_'.join(t[1:])
+                add_cmd['to_id'] = msg['from_user']['uin']
+                self.CommandList.append(add_cmd)
+
+            # 添加改变机器人命令
+            elif re.match(r'^change_bot_\d+$', cmd_text):
+                add_cmd['func'] = 'change_bot'
+                add_cmd['time'] = msg['value']['time']
+                t = re.sub(r'^change_bot_', '', cmd_text)
+                add_cmd['bot_order'] = int(t)
+                add_cmd['to_id'] = msg['from_user']['uin']
+                self.CommandList.append(add_cmd)
+            elif cmd_text == 'check_bot':
+                add_cmd['func'] = 'check_bot'
+                add_cmd['time'] = msg['value']['time']
                 add_cmd['to_id'] = msg['from_user']['uin']
                 self.CommandList.append(add_cmd)
 

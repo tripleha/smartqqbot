@@ -44,6 +44,11 @@ while True:
 
     if smartqq.exit_code == 0:
         echo('重新启动\n')
+    elif smartqq.exit_code == 100:
+        echo('开始睡眠\n')
+        while 1 < time.localtime().tm_hour < 8:
+            time.sleep(360)
+        echo('睡眠结束，重新启动\n')
     else:
         # kill process
         echo('关闭数据库\n')

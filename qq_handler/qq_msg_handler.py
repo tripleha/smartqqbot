@@ -92,6 +92,8 @@ class QQMsgHandler(object):
                 add_reply['text'] += '7.output_group_\d+{群序号} 输出某群记录到本地文件' + '\n'
                 add_reply['text'] += '8.send_group_\d+{群序号}_\{邮箱} 发送记录文件，支持.com结尾的邮箱' + '\n'
                 add_reply['text'] += '9.clean_table 清除当前窗口记录' + '\n'
+                add_reply['text'] += '10.check_bot 查看bot列表和当前bot' + '\n'
+                add_reply['text'] += '11.change_bot_\d+{bot序号} 设置某bot为当前bot' + '\n'
                 add_reply['to_id'] = cmd['to_id']
                 self.smartqq.ReplyList.append(add_reply)
 
@@ -278,6 +280,23 @@ class QQMsgHandler(object):
                 except:
                     error(traceback.format_exc())
                     add_reply['text'] = '删除失败'
+                add_reply['to_id'] = cmd['to_id']
+                self.smartqq.ReplyList.append(add_reply)
+
+            # 改变机器人操作
+            elif cmd['func'] == 'check_bot':
+                add_reply['text'] = ''
+                for b in xrange(len(self.smartqq.bot.bot_list)):
+                    add_reply['text'] += '%d.%s\n' % (b, self.smartqq.bot.bot_list[b])
+                add_reply['text'] += 'active bot is: %s' % self.smartqq.bot.active_bot
+                add_reply['to_id'] = cmd['to_id']
+                self.smartqq.ReplyList.append(add_reply)
+            elif cmd['func'] == 'change_bot':
+                if cmd['bot_order'] >= len(self.smartqq.bot.bot_list):
+                    add_reply['text'] = '无效编号'
+                else:
+                    self.smartqq.bot.active_bot = self.smartqq.bot.bot_list[cmd['bot_order']]
+                    add_reply['text'] = '设置成功'
                 add_reply['to_id'] = cmd['to_id']
                 self.smartqq.ReplyList.append(add_reply)
 
