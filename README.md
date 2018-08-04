@@ -1,4 +1,6 @@
-# smartqqbot project
+# 由于网页QQ接口存在限制且已经长期不维护，会导致封号风险，所以本项目以废弃
+
+## smartqqbot project
 
 使用smartqq API接口，可以实现自动回复和获取聊天记录
 
